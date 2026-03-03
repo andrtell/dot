@@ -11,6 +11,7 @@ decorations = "None"
 title = "Alacritty@CachyOS"
 opacity = 1.0
 decorations_theme_variant = "Light"
+padding = { x = 3, y = 3 }
 
 [window.dimensions]
 columns = 0
