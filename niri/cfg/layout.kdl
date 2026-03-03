@@ -22,6 +22,6 @@
 
 	focus-ring {
 		width 2
-		active-color "#a0b0c0"
+		active-color "#90a0b0"
 	}
     }
