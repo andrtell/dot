@@ -162,7 +162,9 @@ do
     pattern = "*.go",
     callback = function()
       local params = vim.lsp.util.make_range_params(nil, "utf-16")
-      params.context = {only = {"source.organizeImports"}}
+      params.context = {
+        only = {"source.organizeImports"}
+      }
       local timeout = 1000
       local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout)
       for cid, res in pairs(result or {}) do
@@ -226,7 +228,7 @@ do
     white  = "#faf9f8",
     black  = "#070707",
     gray   = "#9197a2",
-    blue   = "#0048a8",
+    blue   = "#0047a7",
     cyan   = "#007a7a",
     green  = "#077700",
     orange = "#9e6c00",
@@ -241,6 +243,8 @@ do
     Search                        = { bg = co.yellow },
     IncSearch                     = { bg = co.yellow },
     CurSearch                     = { bg = co.yellow },
+    StatusLine                    = { bg = "#e7e7e7" },
+    Directory                     = { fg = co.blue   },
     ['@keyword.vim']              = { fg = co.string },
     ['@variable.builtin.vim']     = { fg = co.string },
     ['@constant.vim']             = { fg = co.string },
@@ -296,6 +300,11 @@ do
   }
 
   require("koda").setup({
+    colors = {
+      bg = co.white,
+      fg = co.black,
+      info = co.blue,
+    },
     on_highlights = function(hl, c)
       for k, v in pairs(hi) do
         hl[k] = v
