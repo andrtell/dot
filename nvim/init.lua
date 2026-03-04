@@ -3,28 +3,30 @@
 -------------
 
 do
-  local vo       = vim.opt
+  local vo         = vim.opt
 
-  vo.background  = "light"
-  vo.breakindent = true
-  vo.clipboard   = "unnamedplus"
-  vo.cursorline  = false
-  vo.gdefault    = true
-  vo.ignorecase  = true
-  vo.laststatus  = 3
-  vo.mouse       = "a"
-  vo.number      = false
-  vo.scrolloff   = 15
-  vo.shortmess   = "Itas"
-  vo.showcmd     = false
-  vo.showmode    = false
-  vo.signcolumn  = "yes:1"
-  vo.smartcase   = true
-  vo.statusline  = " %f %m%r %= %{&filetype} | %n | %{&fenc} | %3l : %2c  "
-  vo.swapfile    = false
-  vo.timeoutlen  = 300
-  vo.updatetime  = 250
-  vo.winborder   = "single"
+  vo.background    = "light"
+  vo.breakindent   = true
+  vo.clipboard     = "unnamedplus"
+  vo.cursorline    = false
+  vo.gdefault      = true
+  vo.ignorecase    = true
+  vo.laststatus    = 3
+  vo.mouse         = "a"
+  vo.number        = false
+  vo.scrolloff     = 15
+  vo.shortmess     = "Itas"
+  vo.showcmd       = false
+  vo.showmode      = false
+  vo.signcolumn    = "yes:1"
+  vo.smartcase     = true
+  vo.statusline    = " %f %m%r %= %{&filetype} | %n | %{&fenc} | %3l : %2c  "
+  vo.swapfile      = false
+  vo.timeoutlen    = 300
+  vo.updatetime    = 250
+  vo.winborder     = "single"
+  vo.conceallevel  = 2
+  vo.concealcursor = "nc"
 
   vim.cmd("set noerrorbells visualbell t_vb=")
   vim.cmd("autocmd GUIEnter * set visualbell t_vb=")
@@ -109,8 +111,8 @@ do
     { src = "https://github.com/neovim/nvim-lspconfig" },
     { src = "https://github.com/mason-org/mason.nvim.git" },
     { src = "https://github.com/mason-org/mason-lspconfig.nvim.git" },
-    { src = "https://github.com/Olical/conjure.git" },
-    { src = "https://github.com/Olical/nfnl.git" },
+    -- { src = "https://github.com/Olical/conjure.git" },
+    -- { src = "https://github.com/Olical/nfnl.git" },
   })
 
   local delpkg
@@ -123,61 +125,6 @@ do
   if next(delpkg) then
     vim.pack.del(delpkg)
   end
-end
-
-
-
----------
--- LSP --
----------
-
-do
-  vim.lsp.config('lua_ls', {
-    settings = { Lua = { diagnostics = { globals = { 'vim', 'require' } } } }
-  })
-
-  vim.lsp.config('gopls', {})
-
-  require("mason").setup()
-  require("mason-lspconfig").setup()
-end
-
------------
--- GUILE --
------------
-
--- do
---   local g = vim.g
---
---   g["conjure#filetype#scheme"] = "conjure.client.guile.socket"
---   g["conjure#client#guile#socket#pipename"] = ".guile-repl.socket"
--- end
-
---------
--- GO --
---------
-
-do
-  vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*.go",
-    callback = function()
-      local params = vim.lsp.util.make_range_params(nil, "utf-16")
-      params.context = {
-        only = {"source.organizeImports"}
-      }
-      local timeout = 1000
-      local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout)
-      for cid, res in pairs(result or {}) do
-        for _, r in pairs(res.result or {}) do
-          if r.edit then
-            local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
-            vim.lsp.util.apply_workspace_edit(r.edit, enc)
-          end
-        end
-      end
-      vim.lsp.buf.format({async = false})
-    end
-  })
 end
 
 -----------------
@@ -210,6 +157,47 @@ do
   })
 end
 
+---------
+-- LSP --
+---------
+
+do
+  vim.lsp.config('lua_ls', {
+    settings = { Lua = { diagnostics = { globals = { 'vim', 'require' } } } }
+  })
+
+  vim.lsp.config('gopls', {})
+
+  require("mason").setup()
+  require("mason-lspconfig").setup()
+end
+
+--------
+-- GO --
+--------
+
+do
+  vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = "*.go",
+    callback = function()
+      local params = vim.lsp.util.make_range_params(nil, "utf-16")
+      params.context = {
+        only = {"source.organizeImports"}
+      }
+      local timeout = 1000
+      local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout)
+      for cid, res in pairs(result or {}) do
+        for _, r in pairs(res.result or {}) do
+          if r.edit then
+            local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
+            vim.lsp.util.apply_workspace_edit(r.edit, enc)
+          end
+        end
+      end
+      vim.lsp.buf.format({async = false})
+    end
+  })
+end
 
 -----------
 -- BLINK --
@@ -232,7 +220,7 @@ do
     cyan   = "#007a7a",
     green  = "#077700",
     orange = "#9e6c00",
-    red    = "#972616",
+    red    = "#982717",
     purple = "#8120a6",
     yellow = "#eeeecf",
   }
@@ -270,6 +258,12 @@ do
     ['@lsp.type.method.lua']      = { bold = false },
     ['@string.escape.lua']        = { fg = co.green },
     ['@boolean.lua']              = { fg = co.purple },
+
+    -- SCHEME
+    ['@operator.scheme']          = { fg = co.orange },
+    ['@keyword.scheme']           = { fg = co.red },
+    ['@number.scheme']            = { fg = co.blue },
+    ['@conceal.scheme']           = { fg = co.red },
 
     -- GO
     ['goFormatSpecifier']         = { fg = co.green },
