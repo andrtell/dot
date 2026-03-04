@@ -111,6 +111,8 @@ do
     { src = "https://github.com/neovim/nvim-lspconfig" },
     { src = "https://github.com/mason-org/mason.nvim.git" },
     { src = "https://github.com/mason-org/mason-lspconfig.nvim.git" },
+    -- { src = "https://github.com/julienvincent/nvim-paredit.git" },
+    { src = "https://github.com/eraserhd/parinfer-rust.git" },
     -- { src = "https://github.com/Olical/conjure.git" },
     -- { src = "https://github.com/Olical/nfnl.git" },
   })
@@ -141,6 +143,20 @@ do
     }
   })
 end
+
+-------------
+-- PAREDIT --
+-------------
+
+-- do
+--   local paredit = require("nvim-paredit")
+--
+--   paredit.setup({
+--     indent = {
+--       enabled = true
+--     }
+--   })
+-- end
 
 ----------------
 -- TREESITTER --
@@ -219,15 +235,17 @@ do
     blue   = "#0047a7",
     cyan   = "#007a7a",
     green  = "#077700",
-    orange = "#9e6c00",
+    orange = "#9f6e00",
+    brown  = "#a06c12",
     red    = "#982717",
     purple = "#8120a6",
-    yellow = "#eeeecf",
+    yellow = "#f0f0d1",
   }
 
   local hi = {
     -- VIM
     DiagnosticError               = { fg = co.red },
+    Visual                        = { bg = co.yellow },
     Search                        = { bg = co.yellow },
     IncSearch                     = { bg = co.yellow },
     CurSearch                     = { bg = co.yellow },
@@ -260,7 +278,7 @@ do
     ['@boolean.lua']              = { fg = co.purple },
 
     -- SCHEME
-    ['@operator.scheme']          = { fg = co.orange },
+    ['@operator.scheme']          = { fg = co.brown },
     ['@keyword.scheme']           = { fg = co.red },
     ['@number.scheme']            = { fg = co.blue },
     ['@conceal.scheme']           = { fg = co.red },

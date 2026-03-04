@@ -28,6 +28,10 @@
       "rev": "cb2cb74f3c3cbbcc17e79cada2060165d616d849",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter.git"
     },
+    "parinfer-rust": {
+      "rev": "845bfbb9916687cba5b6bae088c9eab70dbb83a3",
+      "src": "https://github.com/eraserhd/parinfer-rust.git"
+    },
     "vim-sayonara": {
       "rev": "75c73f3cf3e96f8c09db5291970243699aadc02c",
       "src": "https://github.com/mhinz/vim-sayonara"
