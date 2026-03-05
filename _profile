@@ -1,15 +1,37 @@
 export BROWSER=firefox
 export TERM=alacritty
-export QT_QPA_PLATFORMTHEME="qt5ct"
-export GTK_THEME=adw-gtk3-dark
 export EDITOR=nvim
+
 export HISTSIZE=5000
 export HISTFILE=${XDG_CACHE_HOME:-$HOME/.cache}/.bash_history
 
-export PATH="/usr/local/go/bin:/usr/local/nvim/bin:$PATH"
+# MISC
 
-source "$HOME/.cargo/env"
+export QT_QPA_PLATFORMTHEME="qt5ct"
+export GTK_THEME=adw-gtk3-dark
+
+# NEOVIM
+
+export PATH="/usr/local/nvim/bin:$PATH"
+
+# GO
+
+export PATH="/usr/local/go/bin:$PATH"
+
+# RUST
+
+. "$HOME/.cargo/env"
+
+# GUIX
 
 GUIX_PROFILE="/home/tell/.guix-profile"
+
 export GUIX_LOCPATH="$GUIX_PROFILE/lib/locale"
-source "$GUIX_PROFILE/etc/profile"
+
+. "$GUIX_PROFILE/etc/profile"
+
+unset GUIX_PROFILE
+
+GUIX_PROFILE="/home/tell/.config/guix/current"
+
+. "$GUIX_PROFILE/etc/profile"
