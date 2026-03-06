@@ -6,8 +6,10 @@ alias ll='ls -lhAF --group-directories-first --color=auto'
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 
-PS1='\w > '
+PS1='╭ \w\n└ > '
 
 if [ -n "$GUIX_ENVIRONMENT" ]; then
-	PS1='\w >> '
+	PS1='╭ \w\n└ >> '
 fi
+
+PROMPT_COMMAND="export PROMPT_COMMAND=echo"

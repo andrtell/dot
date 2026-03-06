@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+
+# https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip

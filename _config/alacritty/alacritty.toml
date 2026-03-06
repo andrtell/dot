@@ -28,6 +28,7 @@ multiplier = 3
 [colors]
 draw_bold_text_with_bright_colors = false
 selection = { text = "#070707", background = "#ebebeb" }
+cursor = {cursor = "#303030", text = "#faf9f8"}
 
 [colors.primary]
 background = "0xfaf9f8"
