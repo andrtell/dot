@@ -56,6 +56,8 @@ do
   vks("n", "]b", ":bnext<cr>")
   vks("n", "s", "<Plug>(leap)")
   vks("n", "S", "<Plug>(leap-from-window)")
+  vks("n", "<F5>", ":e $HOME/.config/nvim/init.lua<cr>")
+  vks("n", "<F2>", ":so %<cr>")
 
   vks("n", "]d", function()
     vim.diagnostic.jump({ count = -1, float = false })
@@ -87,10 +89,10 @@ do
     local opt = { silent = true, buffer = true, remap = true }
     local vks = vim.keymap.set
     vks("n", "<esc>", ":Sayonara!<cr>", opt)
-    vks("n", "h", "-", opt)
-    vks("n", "l", "<cr>", opt)
-    vks("n", ".", "gh", opt)
-    vks("n", "H", "h", opt)
+    vks("n", "h",     "-",              opt)
+    vks("n", "l",     "<cr>",           opt)
+    vks("n", ".",     "gh",             opt)
+    vks("n", "H",     "h",              opt)
   end
 
   vim.api.nvim_create_autocmd("FileType", {
@@ -247,6 +249,7 @@ do
   local bg = {
     white  = "#faf9f8",
     yellow = "#f0f0d1",
+    gray   = "#e7e7e7",
   }
 
   local hi = {
@@ -256,7 +259,7 @@ do
     Search                        = { bg = bg.yellow },
     IncSearch                     = { bg = bg.yellow },
     CurSearch                     = { bg = bg.yellow },
-    StatusLine                    = { bg = "#e7e7e7" },
+    StatusLine                    = { bg = bg.gray },
     Directory                     = { fg = fg.blue   },
     ['@keyword.vim']              = { fg = fg.string },
     ['@variable.builtin.vim']     = { fg = fg.string },
@@ -289,6 +292,8 @@ do
     ['@keyword.scheme']           = { fg = fg.red },
     ['@number.scheme']            = { fg = fg.blue },
     ['@conceal.scheme']           = { fg = fg.red },
+    ['@variable.scheme']          = { fg = "none" },
+    ['@string.special.symbol.scheme'] = { fg = fg.blue },
 
     -- GO
     ['goFormatSpecifier']         = { fg = fg.green },
@@ -324,7 +329,7 @@ do
       fg    = fg.black,
       info  = fg.blue,
     },
-    on_highlights = function(hl, c)
+    on_highlights = function(hl, _colors)
       for k, v in pairs(hi) do
         hl[k] = v
       end
