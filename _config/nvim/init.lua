@@ -63,7 +63,7 @@ do
   vim.g.netrw_keepdir   = 0
   vim.g.netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
 
-  local group     = vim.api.nvim_create_augroup("netrw-group", { clear = true })
+  local group     = vim.api.nvim_create_augroup("netrw", { clear = true })
   local pattern   = { 'netrw' }
   local callback  = function()
     local o = { silent = true, buffer = true, remap = true }
@@ -129,7 +129,7 @@ end
 --| TREESITTER
 
 do
-  local group    = vim.api.nvim_create_augroup("ts-group", { clear = true })
+  local group    = vim.api.nvim_create_augroup("treesitter", { clear = true })
   local pattern  = {
     "c",
     "fennel",
@@ -165,10 +165,8 @@ end
 --| GO
 
 do
-  local group     = vim.api.nvim_create_augroup('go-group', { clear = true })
-
+  local group     = vim.api.nvim_create_augroup('golang', { clear = true })
   local pattern   = { '*.go' }
-
   local callback  = function()
     local params = vim.lsp.util.make_range_params(nil, "utf-16")
     params.context = {
