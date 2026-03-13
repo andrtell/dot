@@ -4,6 +4,10 @@
       "rev": "74afc2893efc031b771316e21b1ba97c9416ffce",
       "src": "https://github.com/saghen/blink.cmp.git"
     },
+    "conjure": {
+      "rev": "42048ce74a7d86dd85091d7d8cebb78d25761da3",
+      "src": "https://github.com/Olical/conjure.git"
+    },
     "koda.nvim": {
       "rev": "44a60a25e8f2a65ef929f814850efbf0db7735d4",
       "src": "https://github.com/oskarnurm/koda.nvim"

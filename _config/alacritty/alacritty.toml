@@ -31,8 +31,8 @@ selection = { text = "#070707", background = "#ebebeb" }
 cursor = {cursor = "#303030", text = "#faf9f8"}
 
 [colors.primary]
-background = "0xfaf9f8"
-foreground = "0x070707"
+background = "0xf9f9f9"
+foreground = "0x060606"
 
 [colors.normal]
 black = "0x070707"
@@ -59,19 +59,19 @@ size = 12
 
 [font.normal]
 family = "JetBrains Mono"
-style = "Regular"
+style = "Light"
 
 [font.bold]
 family = "JetBrains Mono"
-style = "Regular"
+style = "Light"
 
 [font.italic]
-family = "JetBrains Mono"
-style = "Italic"
+family = "JetBrains Mono NL"
+style = "Light"
 
 [font.bold_italic]
 family = "JetBrains Mono"
-style = "Bold Italic"
+style = "Light"
 
 [selection]
 semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"

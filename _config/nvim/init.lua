@@ -1,110 +1,90 @@
--------------
--- OPTIONS -- 
--------------
+--| OPTIONS
 
 do
-  local vo         = vim.opt
+  local opt         = vim.opt
 
-  vo.background    = "light"
-  vo.breakindent   = true
-  vo.clipboard     = "unnamedplus"
-  vo.cursorline    = false
-  vo.gdefault      = true
-  vo.ignorecase    = true
-  vo.laststatus    = 3
-  vo.mouse         = "a"
-  vo.number        = false
-  vo.scrolloff     = 15
-  vo.shortmess     = "Itas"
-  vo.showcmd       = false
-  vo.showmode      = false
-  vo.signcolumn    = "yes:1"
-  vo.smartcase     = true
-  vo.statusline    = " %f %m%r %= %{&filetype} | %n | %{&fenc} | %3l : %2c  "
-  vo.swapfile      = false
-  vo.timeoutlen    = 300
-  vo.updatetime    = 250
-  vo.winborder     = "single"
-  vo.conceallevel  = 2
-  vo.concealcursor = "nc"
+  opt.background    = "light"
+  opt.breakindent   = true
+  opt.clipboard     = "unnamedplus"
+  opt.cursorline    = false
+  opt.gdefault      = true
+  opt.ignorecase    = true
+  opt.laststatus    = 3
+  opt.mouse         = "a"
+  opt.number        = false
+  opt.scrolloff     = 15
+  opt.shortmess     = "Itas"
+  opt.showcmd       = false
+  opt.showmode      = false
+  opt.signcolumn    = "yes:1"
+  opt.smartcase     = true
+  opt.statusline    = " %f %m%r %= %{&filetype} | %n | %{&fenc} | %3l : %2c  "
+  opt.swapfile      = false
+  opt.timeoutlen    = 300
+  opt.updatetime    = 250
+  opt.winborder     = "single"
+  opt.conceallevel  = 2
+  opt.concealcursor = "nc"
 
   vim.cmd("set noerrorbells visualbell t_vb=")
   vim.cmd("autocmd GUIEnter * set visualbell t_vb=")
 end
 
-----------
--- KEYS --
-----------
+--| KEYS
 
 do
-  local g = vim.g
+  vim.g.mapleader       = " "
+  vim.g.maplocalleader  = ","
 
-  g.mapleader       = " "
-  g.maplocalleader  = ","
-
-  local vks = vim.keymap.set
-
-  vks("i", "jk", "<esc>")
-  vks("n", "*", "g*")
-  vks("n", "<bs>", ":nohl<cr>")
-  vks("n", "-", ":Ex<cr>")
-  vks("n", "<c-h>", "<c-w><c-h>")
-  vks("n", "<c-l>", "<c-w><c-l>")
-  vks("n", "<c-j>", "<c-w><c-j>")
-  vks("n", "<c-k>", "<c-w><c-k>")
-  vks("n", "[b", ":bprevious<cr>")
-  vks("n", "]b", ":bnext<cr>")
-  vks("n", "s", "<Plug>(leap)")
-  vks("n", "S", "<Plug>(leap-from-window)")
-  vks("n", "<F5>", ":e $HOME/.config/nvim/init.lua<cr>")
-  vks("n", "<F2>", ":so %<cr>")
-
-  vks("n", "]d", function()
-    vim.diagnostic.jump({ count = -1, float = false })
-  end)
-
-  vks("n", "[d", function()
-    vim.diagnostic.jump({ count = 1, float = false })
-  end)
-
-  vks("n", "gd", vim.lsp.buf.definition, { desc = "LSP: Go to definition" })
+  local k = {
+    {'i',   'jk',       '<esc>'},
+    {'n',   '<c-h>',    '<c-w><c-h>'},
+    {'n',   '<c-l>',    '<c-w><c-l>'},
+    {'n',   '<c-j>',    '<c-w><c-j>'},
+    {'n',   '<c-k>',    '<c-w><c-k>'},
+    {'n',   '*',        'g*'},
+    {'n',   '<bs>',     ':nohl<cr>'},
+    {'n',   '-',        ':Ex<cr>'},
+    {'n',   '[b',       ':bprevious<cr>'},
+    {'n',   ']b',       ':bnext<cr>'},
+    {'n',   's',        '<Plug>(leap)'},
+    {'n',   'S',        '<Plug>(leap-from-window)'},
+    {'n',   '<F5>',     ':e $HOME/.config/nvim/init.lua<cr>'},
+    {'n',   '<F2>',     ':so %<cr>'},
+  }
+  for _, t in ipairs(k) do vim.keymap.set(unpack(t)) end
+  -- vks("n", "gd", vim.lsp.buf.definition, { desc = "LSP: Go to definition" })
 end
 
------------
--- NETRW --
------------
+--| NETRW
 
 do
-  local g = vim.g
+  vim.g.netrw_banner    = 0
+  vim.g.netrw_keepdir   = 0
+  vim.g.netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
 
-  g.netrw_banner    = 0
-  g.netrw_keepdir   = 0
-  g.netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
-
-  local au_group     = vim.api.nvim_create_augroup("netrw-group", { clear = true })
-
-  local au_pattern   = { 'netrw' }
-
-  local au_callback  = function()
-    local opt = { silent = true, buffer = true, remap = true }
-    local vks = vim.keymap.set
-    vks("n", "<esc>", ":Sayonara!<cr>", opt)
-    vks("n", "h",     "-",              opt)
-    vks("n", "l",     "<cr>",           opt)
-    vks("n", ".",     "gh",             opt)
-    vks("n", "H",     "h",              opt)
+  local group     = vim.api.nvim_create_augroup("netrw-group", { clear = true })
+  local pattern   = { 'netrw' }
+  local callback  = function()
+    local o = { silent = true, buffer = true, remap = true }
+    local k = {
+      {'n', '<esc>', ':Sayonara!<cr>', o},
+      {'n', 'h',     '-',              o},
+      {'n', 'l',     '<cr>',           o},
+      {'n', '.',     'gh',             o},
+      {'n', 'H',     'h',              o},
+    }
+    for _, t in ipairs(k) do vim.keymap.set(unpack(t)) end
   end
 
   vim.api.nvim_create_autocmd("FileType", {
-    group     = au_group,
-    pattern   = au_pattern,
-    callback  = au_callback,
+    group     = group,
+    pattern   = pattern,
+    callback  = callback,
   })
 end
 
---------------
--- PACKAGES --
---------------
+--| PACKAGES
 
 do
   vim.pack.add({
@@ -117,10 +97,10 @@ do
     { src = "https://github.com/nvim-treesitter/nvim-treesitter.git" },
     { src = "https://github.com/oskarnurm/koda.nvim" },
     { src = "https://github.com/saghen/blink.cmp.git" },
+    { src = "https://github.com/Olical/conjure.git" },
   })
 
   local delpkg
-
   delpkg = vim.iter(vim.pack.get())
   delpkg = delpkg:filter(function(x) return not x.active end)
   delpkg = delpkg:map(function(x) return x.spec.name end)
@@ -131,9 +111,7 @@ do
   end
 end
 
------------------
--- DIAGNOSTICS --
------------------
+--| DIAGNOSTICS
 
 do
   local d = vim.diagnostic
@@ -148,14 +126,19 @@ do
   })
 end
 
-----------------
--- TREESITTER --
-----------------
+--| TREESITTER
 
 do
   local au_group    = vim.api.nvim_create_augroup("ts-group", { clear = true })
 
-  local au_pattern  = { "go", "lua", "scheme", "fennel" }
+  local au_pattern  = {
+    "c",
+    "fennel",
+    "go",
+    "lua",
+    "odin",
+    "scheme",
+  }
 
   local au_callback = function()
     vim.treesitter.start()
@@ -168,9 +151,7 @@ do
   })
 end
 
----------
--- LSP --
----------
+--| LSP
 
 do
   vim.lsp.config('lua_ls', {
@@ -183,25 +164,22 @@ do
   require("mason-lspconfig").setup()
 end
 
---------
--- GO --
---------
+--| CONJURE
+
+--| GO
 
 do
-  local au_group     = vim.api.nvim_create_augroup('go-group', { clear = true })
+  local group     = vim.api.nvim_create_augroup('go-group', { clear = true })
 
-  local au_pattern   = { '*.go' }
+  local pattern   = { '*.go' }
 
-  local au_callback  = function()
+  local callback  = function()
     local params = vim.lsp.util.make_range_params(nil, "utf-16")
-
     params.context = {
       only = { 'source.organizeImports' }
     }
-
     local timeout = 1000
     local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, timeout)
-
     for cid, res in pairs(result or {}) do
       for _, r in pairs(res.result or {}) do
         if r.edit then
@@ -210,124 +188,182 @@ do
         end
       end
     end
-
     vim.lsp.buf.format({async = false})
   end
 
   vim.api.nvim_create_autocmd("BufWritePre", {
-    group     = au_group,
-    pattern   = au_pattern,
-    callback  = au_callback
+    group     = group,
+    pattern   = pattern,
+    callback  = callback
   })
 end
 
------------
--- BLINK --
------------
+--| BLINK
 
 do
   require("blink.cmp").setup()
 end
 
------------------
--- COLORSCHEME --
------------------
+--| COLORSCHEME
 
-do
+function Colors()
   local fg = {
-    black  = "#070707",
-    gray   = "#9197a2",
-    blue   = "#0047a7",
-    cyan   = "#007a7a",
-    green  = "#077700",
-    orange = "#9f6e00",
-    brown  = "#a06c12",
-    red    = "#982717",
-    purple = "#8120a6",
+    black  = "#000000",
+    blue   = "#00389d",
+    brown  = "#6a3800",
+    cyan   = "#006768",
+    gray   = "#979795",
+    green  = "#066700",
+    orange = "#a36500",
+    purple = "#800e80",
+    red    = "#942019",
   }
 
   local bg = {
-    white  = "#faf9f8",
-    yellow = "#f0f0d1",
+    white  = "#fafafa",
+    yellow = "#eeeed5",
     gray   = "#e7e7e7",
+  }
+
+  local pa = {
+    fg        = fg.black,
+    bg        = bg.white,
+
+    visual    = "#ececec",
+    error     = fg.red,
+    directory = fg.blue,
+    status    = bg.gray,
+
+    keyword   = fg.red,
+    string    = fg.green,
+    constant  = fg.purple,
+    number    = fg.blue,
+    comment   = fg.gray,
+    type      = fg.orange,
   }
 
   local hi = {
     -- VIM
-    DiagnosticError               = { fg = fg.red },
-    Visual                        = { bg = bg.yellow },
-    Search                        = { bg = bg.yellow },
-    IncSearch                     = { bg = bg.yellow },
-    CurSearch                     = { bg = bg.yellow },
-    StatusLine                    = { bg = bg.gray },
-    Directory                     = { fg = fg.blue   },
-    ['@keyword.vim']              = { fg = fg.string },
-    ['@variable.builtin.vim']     = { fg = fg.string },
-    ['@constant.vim']             = { fg = fg.string },
+    DiagnosticError               = { fg = pa.error     },
+    Visual                        = { bg = pa.visual    },
+    Search                        = { bg = pa.visual    },
+    IncSearch                     = { bg = pa.visual    },
+    CurSearch                     = { bg = pa.visual    },
+    StatusLine                    = { bg = pa.status    },
+    Directory                     = { fg = pa.directory },
+    Include                       = { fg = pa.keyword   },
+    Constant                      = { fg = pa.fg        },
+    ['@keyword.vim']              = { fg = pa.string    },
+    ['@variable.builtin.vim']     = { fg = pa.string    },
+    ['@constant.vim']             = { fg = pa.string    },
+
+    -- MARKUP
+    ['@markup.raw']               = { fg = pa.type },
 
     -- CODE
-    Boolean                       = { fg = fg.pink },
-    Float                         = { fg = fg.blue },
-    Function                      = { bold = false },
-    Keyword                       = { fg = fg.red, bold = false },
-    Number                        = { fg = fg.blue, bold = false },
-    Statement                     = { fg = fg.red },
-    String                        = { fg = fg.green, italic = false },
-    Type                          = { fg = fg.const, italic = false, bold = false },
+    Comment                       = { fg = pa.comment },
+    Boolean                       = { fg = pa.constant },
+    Float                         = { fg = pa.number },
+    Function                      = { },
+    Keyword                       = { fg = fg.red },
+    Number                        = { fg = fg.blue },
+    Statement                     = { fg = pa.keyword },
+    String                        = { fg = pa.string },
+    Type                          = { fg = pa.fg },
+
+    -- TOML
+    TomlInteger                   = { fg = pa.number },
 
     -- LEAP (PLUGIN)
-    LeapLabel                     = { bg = bg.yellow },
+    LeapLabel                     = { bg = pa.visual },
 
     -- LUA
-    ['@function.builtin.lua']     = { bold = false },
-    ['@function.call.lua']        = { bold = false },
-    ['@function.lua']             = { bold = false },
-    ['@lsp.type.function.lua']    = { bold = false },
-    ['@lsp.type.method.lua']      = { bold = false },
-    ['@string.escape.lua']        = { fg = fg.green },
-    ['@boolean.lua']              = { fg = fg.purple },
+    ['@function.builtin.lua']     = { },
+    ['@function.call.lua']        = { fg = pa.fg },
+    ['@function.lua']             = { },
+    ['@number.lua']               = { fg = pa.number },
+    ['@lsp.type.function.lua']    = { },
+    ['@lsp.type.method.lua']      = { },
+    ['@string.escape.lua']        = { fg = pa.string },
+    ['@boolean.lua']              = { fg = pa.constant },
+    ['@operator.lua']             = { fg = pa.fg },
+    ['@keyword.operator.lua']     = { fg = pa.keyword },
 
     -- SCHEME
     ['@operator.scheme']          = { fg = fg.brown },
-    ['@keyword.scheme']           = { fg = fg.red },
-    ['@number.scheme']            = { fg = fg.blue },
-    ['@conceal.scheme']           = { fg = fg.red },
+    ['@keyword.scheme']           = { fg = pa.keyword },
+    ['@number.scheme']            = { fg = pa.number },
+    ['@conceal.scheme']           = { fg = pa.keyword },
     ['@variable.scheme']          = { fg = "none" },
-    ['@string.special.symbol.scheme'] = { fg = fg.blue },
+    ['@string.special.symbol.scheme'] = { fg = pa.number },
 
     -- GO
-    ['goFormatSpecifier']         = { fg = fg.green },
-    ['goBuiltins']                = { fg = fg.red },
+    ['goFormatSpecifier']         = { fg = pa.string },
+    ['goBuiltins']                = { fg = pa.keyword },
+
+    ['@function.call.go']         = { },
+    ['@function.go']              = { },
+    ['@function.builtin.go']      = { fg = pa.keyword },
+    ['@constant.go']              = { fg = pa.fg },
+    ['@constant.builtin.go']      = { fg = fg.cyan },
+    ['@function.method.call.go']  = { },
+    ['@function.method.go']       = {  },
+    ['@lsp.type.function.go']     = {  },
+    ['@string.escape.go']         = { fg = pa.string },
 
     ['@type.go']                  = { fg = fg.black },
-    ['@function.call.go']         = { bold = false },
-    ['@function.go']              = { bold = false },
-    ['@function.builtin.go']      = { fg = fg.red, bold = true },
-    ['@constant.go']              = { fg = fg.black },
-    ['@constant.builtin.go']      = { fg = fg.cyan },
-    ['@function.method.call.go']  = { bold = false },
-    ['@function.method.go']       = { bold = false },
-    ['@keyword.return.go']        = { fg = fg.red, bold = false },
-    ['@keyword.import.go']        = { fg = fg.red, bold = false },
-    ['@lsp.type.function.go']     = { bold = false },
-    ['@string.escape.go']         = { fg = fg.green },
-
+    ['@type.builtin.go']          = { fg = fg.black },
+    ['@keyword.return.go']        = { fg = pa.keyword },
+    ['@keyword.import.go']        = { fg = pa.keyword },
+    ['@keyword.function.go']      = { fg = pa.keyword },
     -- C
-    ['cStorageClass']             = { fg = fg.black },
-    ['cInclude']                  = { fg = fg.black },
-    ['cFormat']                   = { fg = fg.green },
-    ['cSpecial']                  = { fg = fg.green },
-    ['cStructure']                = { fg = fg.red },
-    ['cOperator']                 = { fg = fg.black },
-    ['cBlock']                    = { fg = fg.black },
+    ['cStorageClass']             = { fg = pa.fg },
+    ['cInclude']                  = { fg = pa.fg },
+    ['cFormat']                   = { fg = pa.string },
+    ['cSpecial']                  = { fg = pa.string },
+    ['cStructure']                = { fg = pa.keyword },
+    ['cOperator']                 = { fg = pa.fg },
+    ['cBlock']                    = { fg = pa.fg },
     ['cConstant']                 = { fg = fg.cyan },
+
+    ['@type.builtin.c']           = { fg = pa.keyword },
+    ['@keyword.operator.c']       = { fg = pa.keyword },
+    ['@keyword.import.c']         = { fg = pa.fg },
+    ['@operator.c']               = { fg = pa.fg },
+    ['@constant.c']               = { fg = pa.fg },
+    ['@constant.builtin.c']       = { fg = pa.fg },
+
+    -- ODIN
+    ['@punctuation.bracket.odin']   = { },
+    ['@punctuation.special.odin']   = { fg = pa.fg },
+    ['@punctuation.delimiter.odin'] = { fg = pa.fg },
+    ['@operator.odin']            = { fg = pa.fg },
+    ['@keyword.operator.odin']    = { fg = pa.keyword },
+    ['@keyword.type.odin']        = { fg = pa.keyword },
+    ['@keyword.directive.odin']   = { fg = pa.fg },
+    ['@keyword.function.odin']    = { fg = pa.keyword },
+    ['@keyword.import.odin']      = { fg = pa.fg },
+    ['@keyword.return.odin']      = { fg = pa.keyword },
+    ['@string.odin']              = { fg = pa.string },
+    ['@string.escape.odin']       = { fg = pa.string },
+    ['@boolean.odin']             = { fg = pa.constant },
+    ['@character.odin']           = { fg = pa.fg },
+    ['@number.odin']              = { fg = pa.number },
+    ['@constant.builtin.odin']    = { fg = pa.constant },
+
+    ['@function.macro.odin']      = { fg = pa.constant },
+    ['@function.call.odin']       = { fg = pa.fg },
+    ['@function.odin']            = { fg = pa.fg },
+    ['@variable.odin']            = { fg = pa.fg },
+
+    -- ['@type.odin']                = { fg = pa.type },
   }
 
   require("koda").setup({
     colors = {
-      bg    = bg.white,
-      fg    = fg.black,
-      info  = fg.blue,
+      bg    = pa.bg,
+      fg    = pa.fg,
+      info  = pa.number,
     },
     on_highlights = function(hl, _colors)
       for k, v in pairs(hi) do
@@ -337,5 +373,7 @@ do
   })
 
   vim.cmd("colorscheme koda")
+
 end
 
+Colors()
