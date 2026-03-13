@@ -129,9 +129,8 @@ end
 --| TREESITTER
 
 do
-  local au_group    = vim.api.nvim_create_augroup("ts-group", { clear = true })
-
-  local au_pattern  = {
+  local group    = vim.api.nvim_create_augroup("ts-group", { clear = true })
+  local pattern  = {
     "c",
     "fennel",
     "go",
@@ -139,15 +138,12 @@ do
     "odin",
     "scheme",
   }
-
-  local au_callback = function()
-    vim.treesitter.start()
-  end
+  local callback = function() vim.treesitter.start() end
 
   vim.api.nvim_create_autocmd("FileType", {
-    group     = au_group,
-    pattern   = au_pattern,
-    callback  = au_callback,
+    group     = group,
+    pattern   = pattern,
+    callback  = callback,
   })
 end
 
