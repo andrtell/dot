@@ -2,7 +2,6 @@
 
 do
   local opt         = vim.opt
-
   opt.background    = "light"
   opt.breakindent   = true
   opt.clipboard     = "unnamedplus"
@@ -25,17 +24,13 @@ do
   opt.winborder     = "single"
   opt.conceallevel  = 2
   opt.concealcursor = "nc"
-
-  vim.cmd("set noerrorbells visualbell t_vb=")
-  vim.cmd("autocmd GUIEnter * set visualbell t_vb=")
 end
 
 --| KEYS
 
 do
-  vim.g.mapleader       = " "
-  vim.g.maplocalleader  = ","
-
+  vim.g.mapleader      = " "
+  vim.g.maplocalleader = ","
   local k = {
     {'i',   'jk',       '<esc>'},
     {'n',   '<c-h>',    '<c-w><c-h>'},
@@ -51,37 +46,9 @@ do
     {'n',   'S',        '<Plug>(leap-from-window)'},
     {'n',   '<F5>',     ':e $HOME/.config/nvim/init.lua<cr>'},
     {'n',   '<F2>',     ':so %<cr>'},
+    {'n',   'gd',       vim.lsp.buf.definition},
   }
   for _, t in ipairs(k) do vim.keymap.set(unpack(t)) end
-  -- vks("n", "gd", vim.lsp.buf.definition, { desc = "LSP: Go to definition" })
-end
-
---| NETRW
-
-do
-  vim.g.netrw_banner    = 0
-  vim.g.netrw_keepdir   = 0
-  vim.g.netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
-
-  local group     = vim.api.nvim_create_augroup("netrw", { clear = true })
-  local pattern   = { 'netrw' }
-  local callback  = function()
-    local o = { silent = true, buffer = true, remap = true }
-    local k = {
-      {'n', '<esc>', ':Sayonara!<cr>', o},
-      {'n', 'h',     '-',              o},
-      {'n', 'l',     '<cr>',           o},
-      {'n', '.',     'gh',             o},
-      {'n', 'H',     'h',              o},
-    }
-    for _, t in ipairs(k) do vim.keymap.set(unpack(t)) end
-  end
-
-  vim.api.nvim_create_autocmd("FileType", {
-    group     = group,
-    pattern   = pattern,
-    callback  = callback,
-  })
 end
 
 --| PACKAGES
@@ -97,18 +64,43 @@ do
     { src = "https://github.com/nvim-treesitter/nvim-treesitter.git" },
     { src = "https://github.com/oskarnurm/koda.nvim" },
     { src = "https://github.com/saghen/blink.cmp.git" },
-    { src = "https://github.com/Olical/conjure.git" },
   })
 
-  local delpkg
-  delpkg = vim.iter(vim.pack.get())
-  delpkg = delpkg:filter(function(x) return not x.active end)
-  delpkg = delpkg:map(function(x) return x.spec.name end)
-  delpkg = delpkg:totable()
+  local function delete_packages()
 
-  if next(delpkg) then
-    vim.pack.del(delpkg)
+    local pkgs = vim.iter(vim.pack.get())
+                  :filter(function(x) return not x.active end)
+                  :map(function(x) return x.spec.name end)
+                  :totable()
+
+    if next(pkgs) then
+      vim.pack.del(pkgs)
+    end
   end
+
+  delete_packages()
+end
+
+--| LSP
+
+do
+  vim.lsp.config('lua_ls', {
+    settings = {
+      Lua = {
+        runtime = {
+          version = _VERSION,
+        },
+        diagnostics = {
+          globals = { 'vim', 'require' }
+        }
+      }
+    }
+  })
+
+  vim.lsp.config('gopls', {})
+
+  require("mason").setup()
+  require("mason-lspconfig").setup()
 end
 
 --| DIAGNOSTICS
@@ -141,26 +133,39 @@ do
   local callback = function() vim.treesitter.start() end
 
   vim.api.nvim_create_autocmd("FileType", {
+    group    = group,
+    pattern  = pattern,
+    callback = callback,
+  })
+end
+
+--| NETRW
+
+do
+  vim.g.netrw_banner    = 0
+  vim.g.netrw_keepdir   = 0
+  vim.g.netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
+
+  local group    = vim.api.nvim_create_augroup("netrw", { clear = true })
+  local pattern  = { 'netrw' }
+  local callback = function()
+    local o = { silent = true, buffer = true, remap = true }
+    local k = {
+      {'n', '<esc>', ':Sayonara!<cr>', o},
+      {'n', 'h',     '-',              o},
+      {'n', 'l',     '<cr>',           o},
+      {'n', '.',     'gh',             o},
+      {'n', 'H',     'h',              o},
+    }
+    for _, t in ipairs(k) do vim.keymap.set(unpack(t)) end
+  end
+
+  vim.api.nvim_create_autocmd("FileType", {
     group     = group,
     pattern   = pattern,
     callback  = callback,
   })
 end
-
---| LSP
-
-do
-  vim.lsp.config('lua_ls', {
-    settings = { Lua = { diagnostics = { globals = { 'vim', 'require' } } } }
-  })
-
-  vim.lsp.config('gopls', {})
-
-  require("mason").setup()
-  require("mason-lspconfig").setup()
-end
-
---| CONJURE
 
 --| GO
 
@@ -186,9 +191,9 @@ do
   end
 
   vim.api.nvim_create_autocmd("BufWritePre", {
-    group     = group,
-    pattern   = pattern,
-    callback  = callback
+    group    = group,
+    pattern  = pattern,
+    callback = callback
   })
 end
 
