@@ -207,28 +207,24 @@ end
 
 function Colors()
   local fg = {
-    black  = "#000000",
-    blue   = "#00389d",
-    brown  = "#6a3800",
-    cyan   = "#006768",
-    gray   = "#979795",
-    green  = "#066700",
-    orange = "#a36500",
-    purple = "#800e80",
-    red    = "#942019",
+    black  = '#000000',
+    red    = '#861616',
+    green  = '#085800',
+    blue   = '#00369d',
+    purple = '#7e0e7c',
+    gray   = '#999999',
   }
 
   local bg = {
-    white  = "#fafafa",
-    yellow = "#eeeed5",
-    gray   = "#e7e7e7",
+    white  = "#fbfbfb",
+    gray   = "#ededec",
   }
 
   local pa = {
     fg        = fg.black,
     bg        = bg.white,
 
-    visual    = "#ececec",
+    visual    = bg.gray,
     error     = fg.red,
     directory = fg.blue,
     status    = bg.gray,
@@ -238,7 +234,7 @@ function Colors()
     constant  = fg.purple,
     number    = fg.blue,
     comment   = fg.gray,
-    type      = fg.orange,
+    type      = fg.black,
   }
 
   local hi = {
@@ -287,9 +283,10 @@ function Colors()
     ['@boolean.lua']              = { fg = pa.constant },
     ['@operator.lua']             = { fg = pa.fg },
     ['@keyword.operator.lua']     = { fg = pa.keyword },
+    ['@keyword.return.lua']       = { fg = pa.keyword },
 
     -- SCHEME
-    ['@operator.scheme']          = { fg = fg.brown },
+    ['@operator.scheme']          = { fg = pa.keyword },
     ['@keyword.scheme']           = { fg = pa.keyword },
     ['@number.scheme']            = { fg = pa.number },
     ['@conceal.scheme']           = { fg = pa.keyword },
@@ -304,7 +301,7 @@ function Colors()
     ['@function.go']              = { },
     ['@function.builtin.go']      = { fg = pa.keyword },
     ['@constant.go']              = { fg = pa.fg },
-    ['@constant.builtin.go']      = { fg = fg.cyan },
+    ['@constant.builtin.go']      = { fg = pa.fg },
     ['@function.method.call.go']  = { },
     ['@function.method.go']       = {  },
     ['@lsp.type.function.go']     = {  },
@@ -323,7 +320,7 @@ function Colors()
     ['cStructure']                = { fg = pa.keyword },
     ['cOperator']                 = { fg = pa.fg },
     ['cBlock']                    = { fg = pa.fg },
-    ['cConstant']                 = { fg = fg.cyan },
+    ['cConstant']                 = { fg = pa.fg },
 
     ['@type.builtin.c']           = { fg = pa.keyword },
     ['@keyword.operator.c']       = { fg = pa.keyword },
