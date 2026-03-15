@@ -1,37 +1,37 @@
---| OPTIONS
+--| OPTION |
+
+local opt         = vim.opt
+
+opt.background    = "light"
+opt.breakindent   = true
+opt.clipboard     = "unnamedplus"
+opt.cursorline    = false
+opt.gdefault      = true
+opt.ignorecase    = true
+opt.laststatus    = 3
+opt.mouse         = "a"
+opt.number        = false
+opt.scrolloff     = 15
+opt.shortmess     = "Itas"
+opt.showcmd       = false
+opt.showmode      = false
+opt.signcolumn    = "yes:1"
+opt.smartcase     = true
+opt.statusline    = " %f %m%r %= %{&filetype} | %n | %{&fenc} | %3l : %2c  "
+opt.swapfile      = false
+opt.timeoutlen    = 300
+opt.updatetime    = 250
+opt.winborder     = "single"
+opt.conceallevel  = 2
+opt.concealcursor = "nc"
+
+--| KEY |
+
+vim.g.mapleader      = " "
+vim.g.maplocalleader = ","
 
 do
-  local opt         = vim.opt
-  opt.background    = "light"
-  opt.breakindent   = true
-  opt.clipboard     = "unnamedplus"
-  opt.cursorline    = false
-  opt.gdefault      = true
-  opt.ignorecase    = true
-  opt.laststatus    = 3
-  opt.mouse         = "a"
-  opt.number        = false
-  opt.scrolloff     = 15
-  opt.shortmess     = "Itas"
-  opt.showcmd       = false
-  opt.showmode      = false
-  opt.signcolumn    = "yes:1"
-  opt.smartcase     = true
-  opt.statusline    = " %f %m%r %= %{&filetype} | %n | %{&fenc} | %3l : %2c  "
-  opt.swapfile      = false
-  opt.timeoutlen    = 300
-  opt.updatetime    = 250
-  opt.winborder     = "single"
-  opt.conceallevel  = 2
-  opt.concealcursor = "nc"
-end
-
---| KEYS
-
-do
-  vim.g.mapleader      = " "
-  vim.g.maplocalleader = ","
-  local k = {
+  local key = {
     {'i',   'jk',       '<esc>'},
     {'n',   '<c-h>',    '<c-w><c-h>'},
     {'n',   '<c-l>',    '<c-w><c-l>'},
@@ -48,30 +48,30 @@ do
     {'n',   '<F2>',     ':so %<cr>'},
     {'n',   'gd',       vim.lsp.buf.definition},
   }
-  for _, t in ipairs(k) do vim.keymap.set(unpack(t)) end
+
+  for _, t in ipairs(key) do vim.keymap.set(unpack(t)) end
 end
 
---| PACKAGES
+--| PACK |
+
+vim.pack.add({
+  { src = "https://codeberg.org/andyg/leap.nvim.git" },
+  { src = "https://github.com/eraserhd/parinfer-rust.git" },
+  { src = "https://github.com/mason-org/mason-lspconfig.nvim.git" },
+  { src = "https://github.com/mason-org/mason.nvim.git" },
+  { src = "https://github.com/mhinz/vim-sayonara" },
+  { src = "https://github.com/neovim/nvim-lspconfig" },
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter.git" },
+  { src = "https://github.com/andrtell/zero.git" },
+  { src = "https://github.com/saghen/blink.cmp.git" },
+})
 
 do
-  vim.pack.add({
-    { src = "https://codeberg.org/andyg/leap.nvim.git" },
-    { src = "https://github.com/eraserhd/parinfer-rust.git" },
-    { src = "https://github.com/mason-org/mason-lspconfig.nvim.git" },
-    { src = "https://github.com/mason-org/mason.nvim.git" },
-    { src = "https://github.com/mhinz/vim-sayonara" },
-    { src = "https://github.com/neovim/nvim-lspconfig" },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter.git" },
-    { src = "https://github.com/andrtell/zero.git" },
-    { src = "https://github.com/saghen/blink.cmp.git" },
-  })
-
   local function delete_packages()
-
     local pkgs = vim.iter(vim.pack.get())
-                  :filter(function(x) return not x.active end)
-                  :map(function(x) return x.spec.name end)
-                  :totable()
+      :filter(function(x) return not x.active end)
+      :map(function(x) return x.spec.name end)
+      :totable()
 
     if next(pkgs) then
       vim.pack.del(pkgs)
@@ -81,42 +81,38 @@ do
   delete_packages()
 end
 
---| LSP
+--| LSP |
 
-do
-  vim.lsp.config('lua_ls', {
-    settings = {
-      Lua = {
-        runtime = {
-          version = _VERSION,
-        },
-        diagnostics = {
-          globals = { 'vim', 'require' }
-        }
+vim.lsp.config('lua_ls', {
+  settings = {
+    Lua = {
+      runtime = {
+        version = _VERSION,
+      },
+      diagnostics = {
+        globals = { 'vim', 'require' }
       }
     }
-  })
+  }
+})
 
-  vim.lsp.config('gopls', {})
+vim.lsp.config('gopls', {})
 
-  require("mason").setup()
-  require("mason-lspconfig").setup()
-end
+require("mason").setup()
+require("mason-lspconfig").setup()
 
---| DIAGNOSTICS
+--| DIAGNOSTIC |
 
-do
-  local d = vim.diagnostic
-  d.enable = true
-  d.config({
-    signs = false,
-    virtual_text = {
-      prefix = "←"
-    }
-  })
-end
+vim.diagnostic.enable = true
 
---| TREESITTER
+vim.diagnostic.config({
+  signs = false,
+  virtual_text = {
+    prefix = "←"
+  }
+})
+
+--| TREESITTER |
 
 do
   local group    = vim.api.nvim_create_augroup("treesitter", { clear = true })
@@ -140,14 +136,15 @@ do
   })
 end
 
---| NETRW
+--| NETRW |
+
+vim.g.netrw_banner    = 0
+vim.g.netrw_keepdir   = 0
+vim.g.netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
 
 do
-  vim.g.netrw_banner    = 0
-  vim.g.netrw_keepdir   = 0
-  vim.g.netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
-
   local group    = vim.api.nvim_create_augroup("netrw", { clear = true })
+
   local pattern  = { 'netrw' }
 
   local callback = function()
@@ -169,10 +166,11 @@ do
   })
 end
 
---| GO
+--| GO |
 
 do
   local group     = vim.api.nvim_create_augroup('golang', { clear = true })
+
   local pattern   = { '*.go' }
 
   local callback  = function()
@@ -205,13 +203,10 @@ do
   })
 end
 
---| BLINK
+--| BLINK |
 
-do
-  require("blink.cmp").setup()
-end
+require("blink.cmp").setup()
 
---| COLORS
+--| COLOR |
 
 vim.cmd("colorscheme zero-light")
-
