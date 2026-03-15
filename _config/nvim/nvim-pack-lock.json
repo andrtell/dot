@@ -4,10 +4,6 @@
       "rev": "74afc2893efc031b771316e21b1ba97c9416ffce",
       "src": "https://github.com/saghen/blink.cmp.git"
     },
-    "koda.nvim": {
-      "rev": "44a60a25e8f2a65ef929f814850efbf0db7735d4",
-      "src": "https://github.com/oskarnurm/koda.nvim"
-    },
     "leap.nvim": {
       "rev": "b81866399072af08195ebfbcfea9d3dcab970972",
       "src": "https://codeberg.org/andyg/leap.nvim.git"
@@ -35,6 +31,10 @@
     "vim-sayonara": {
       "rev": "75c73f3cf3e96f8c09db5291970243699aadc02c",
       "src": "https://github.com/mhinz/vim-sayonara"
+    },
+    "zero": {
+      "rev": "4f6decc8d23c8dae34b040c82b39a24493b44637",
+      "src": "https://github.com/andrtell/zero.git"
     }
   }
 }

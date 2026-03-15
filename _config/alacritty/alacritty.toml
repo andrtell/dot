@@ -31,18 +31,18 @@ selection = { text = "#070707", background = "#ebebeb" }
 cursor = {cursor = "#303030", text = "#faf9f8"}
 
 [colors.primary]
-background = "0xfafafa"
+background = "0xf9f9f9"
 foreground = "0x000000"
 
 [colors.normal]
-black = "0x070707"
-red = "0x972616"
-green = "0x077700"
+black = "0x000000"
+red = "0x7e1e00"
+green = "0x025604"
 yellow = "0x9f6e00"
-blue = "0x003898"
-magenta = "0x8120a6"
+blue = "0x04359b"
+magenta = "0x6c0d6c"
 cyan = "0x006a6a"
-white = "0xfafafa"
+white = "0xf9f9f9"
 
 # [colors.bright]
 # black = "0x4C566A"
@@ -53,9 +53,9 @@ white = "0xfafafa"
 # magenta = "0xB48EAD"
 # cyan = "0x8FBCBB"
 # white = "0xECEFF4"
-
 [font]
 size = 12
+offset = { y = 1, x = 0 }
 
 [font.normal]
 family = "JetBrains Mono"
@@ -66,7 +66,7 @@ family = "JetBrains Mono"
 style = "Light"
 
 [font.italic]
-family = "JetBrains Mono NL"
+family = "JetBrains Mono"
 style = "Light"
 
 [font.bold_italic]
